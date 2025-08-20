@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ночная Смена - Хоррор Игра</title>
+    <style>
+        /* Основные стили */
+        :root {
+            --dark-bg: #0a0a0f;
+            --darker-bg: #050508;
+            --accent: #8a0303;
+            --accent-glow: #ff0000;
+            --text: #e0e0e0;
+            --muted-text: #a0a0a0;
+            --border: #222233;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text);
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(138, 3, 3, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(138, 3, 3, 0.1) 0%, transparent 20%);
+            background-attachment: fixed;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            border-bottom: 1px solid var(--accent);
+            position: relative;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: var(--accent);
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+            animation: flicker 8s infinite alternate;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--muted-text);
+            margin-top: 10px;
+        }
+
+        section {
+            margin: 40px 0;
+            padding: 20px;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            background-color: var(--darker-bg);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        h2 {
+            color: var(--accent);
+            border-bottom: 1px solid var(--accent);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        h3 {
+            color: var(--accent);
+            margin-top: 25px;
+        }
+
+        /* Анимация мерцания для заголовка */
+        @keyframes flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+                text-shadow: 0 0 10px var(--accent-glow);
+            }
+            20%, 24%, 55% {
+                text-shadow: none;
+                opacity: 0.9;
+            }
+        }
+
+        /* Эффект старых камер наблюдения */
+        .camera-effect {
+            position: relative;
+        }
+
+        .camera-effect::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15),
+                rgba(0, 0, 0, 0.15) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            z-index: 1;
+        }
+
+        /* Стили для списка правил */
+        .rules-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .rules-list li {
+            margin-bottom: 15px;
+            padding: 15px;
+            background-color: rgba(30, 30, 40, 0.5);
+            border-left: 3px solid var(--accent);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .rules-list li:hover {
+            background-color: rgba(50, 50, 60, 0.7);
+            transform: translateX(5px);
+        }
+
+        /* Стили для антагонистов */
+        .antagonists-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .antagonist {
+            padding: 15px;
+            background-color: rgba(30, 30, 40, 0.5);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .antagonist:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 10px rgba(138, 3, 3, 0.3);
+        }
+
+        /* Стили для особенностей */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .feature {
+            padding: 15px;
+            background-color: rgba(30, 30, 40, 0.5);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+        }
+
+        /* Эффект мигающего текста для важных элементов */
+        .blink {
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .antagonists-grid, .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Эффект статического электричества */
+        .static {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0;
+            background: radial-gradient(circle at center, transparent 0%, rgba(255, 255, 255, 0.05) 100%);
+            animation: static 8s infinite;
+        }
+
+        @keyframes static {
+            0%, 95%, 100% { opacity: 0; }
+            96%, 98% { opacity: 0.1; }
+            97% { opacity: 0.05; }
+        }
+    </style>
+</head>
+<body>
+    <div class="static"></div>
+
+    <div class="container">
+        <header>
+            <h1>Ночная Смена</h1>
+            <p class="subtitle">Хоррор-игра о выживании в заброшенном офисе с параноидальными правилами</p>
+        </header>
+
+        <section class="camera-effect">
+            <h2>1. Logline (Смысловая аннотация)</h2>
+            <p>Новый охранник на своей первой ночной смене в заброшенном офисном комплексе обнаруживает список из 11 параноидальных правил выживания. Чтобы дожить до утра, он должен не только выполнять свою скучную работу, но и безукоризненно следовать правилам, нарушение которых приводит к встрече с необъяснимыми и враждебными сверхъестественными сущностями.</p>
+        </section>
+
+        <section>
+            <h2>2. Core Gameplay Loop (Основной игровой цикл)</h2>
+            <ul>
+                <li><span class="blink">Получить задание:</span> Рация или компьютер выдают задачу (например, «Проверить коридор 2B», «Сделать обход этажа»).</li>
+                <li><span class="blink">Планирование:</span> Игрок проверяет камеры, чтобы проложить безопасный маршрут.</li>
+                <li><span class="blink">Рискованный выход:</span> Игрок покидает безопасную комнату охраны и движется по локации.</li>
+                <li><span class="blink">Столкновение с правилами:</span> Во время пути активируются скриптовые события или случайные встречи, основанные на Правилах. Игрок должен правильно среагировать (включить свет, бежать, смотреть, не двигаться).</li>
+                <li><span class="blink">Выживание/Последствия:</span> Правильная реакция позволяет пережить encounter. Неправильная — запускает цепь событий (погоня, атака), forcing the player to flee to safety.</li>
+                <li><span class="blink">Возвращение/Передышка:</span> Игрок возвращается в комнату охраны, чтобы сохраниться, перевести дух и получить новое задание. Чем позже время, тем чаще и агрессивнее становятся события.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>3. The Pillars (Столпы игры)</h2>
+            <ul>
+                <li><span class="blink">Управление страхом:</span> Страх возникает не от прыжков с испугом (jump scares), а от постоянного параноидального напряжения, непредсказуемости и необходимости принимать решения под давлением.</li>
+                <li><span class="blink">Знание — это безопасность:</span> Список Правил — это главный инструмент игрока. Их запоминание и правильное применение — ключ к выживанию. Незнание карается смертью.</li>
+                <li><span class="blink">Баланс между рутиной и ужасом:</span> Контраст между скучными обязанностями ночного сторожа (ходить, проверять, отмечать) и внезапными всплесками сверхъестественного ужаса.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>4. Key Features (Ключевые особенности)</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <h3>Динамическая система угроз</h3>
+                    <p>Сущности не привязаны к скриптам, они живут своей «жизнью» в здании, реагируя на звук, свет и действия игрока.</p>
+                </div>
+                <div class="feature">
+                    <h3>11 Правил Выживания</h3>
+                    <p>Уникальная механика, где геймплей строится на запоминании и соблюдении строгих, нелогичных инструкций.</p>
+                </div>
+                <div class="feature">
+                    <h3>Хрупкая безопасность</h3>
+                    <p>Комната охраны — лишь временное укрытие. Некоторые угрозы могут проникать в нее или выманивать игрока наружу.</p>
+                </div>
+                <div class="feature">
+                    <h3>Экологичный сторителлинг</h3>
+                    <p>История компании и трагедий, произошедших здесь, раскрывается через найденные записки, записи камер наблюдения, голосовые сообщения и environmental storytelling.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>5. Main Character (Главный герой)</h2>
+            <ul>
+                <li><span class="blink">Имя:</span> Неизвестно (игрок сам себе персонаж).</li>
+                <li><span class="blink">Профессия:</span> Ночной охранник.</li>
+                <li><span class="blink">Мотивация:</span> Заработать деньги. Позже — выжить и раскрыть правду.</li>
+                <li><span class="blink">Характер:</span> Обычный человек без особых навыков. Не умеет драться. Его главные инструменты — внимательность, знание правил и быстрые ноги.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>6. The Antagonists (Антагонисты)</h2>
+            <p>Сущности не имеют физической формы, они проявляются через звуки, искажения реальности и визуальные образы.</p>
+
+            <div class="antagonists-grid">
+                <div class="antagonist">
+                    <h3>«Хлопок» (The Slamming)</h3>
+                    <p>Агрессивная сущность, создающая оглушительный шум.</p>
+                </div>
+                <div class="antagonist">
+                    <h3>«Тень» (The Shade)</h3>
+                    <p>Высокая гуманоидная фигура, появляющаяся в темноте. Прямой взгляд привлекает ее.</p>
+                </div>
+                <div class="antagonist">
+                    <h3>«Плачущий» (The Weeper)</h3>
+                    <p>Манипулятор, использующий звуки плача и голоса ребенка как приманку.</p>
+                </div>
+                <div class="antagonist">
+                    <h3>«Девочка» (The Glitch)</h3>
+                    <p>Проявляется только через камеры наблюдения. Ее появление — это предупреждение.</p>
+                </div>
+                <div class="antagonist">
+                    <h3>«Мальчик» (The Mimic)</h3>
+                    <p>Принимает облик ребенка, чтобы вызвать жалость и нарушить правила. Самый агрессивный преследователь.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>7. The List of Rules (Полный список правил)</h2>
+            <p>Правила написаны на crumpled, coffee-stained paper дрожащим почерком.</p>
+
+            <ol class="rules-list">
+                <li>Услышишь женский крик — немедленно включи свет в этой комнате.</li>
+                <li>Услышишь тяжелые шаги на лестнице — беги в комнату охраны.</li>
+                <li>Не заходи в лифт, если слышишь плач ребенка.</li>
+                <li>Если кофемашина сама сварила кофе, вылей его. Если жидкость красная — беги, не дыша.</li>
+                <li>Если принтер в 204Б печатает сам — сожги листок, не читая.</li>
+                <li>Видишь тень без человека — зайди в комнату, закрой глаза и считай до 30.</li>
+                <li>Если все звуки внезапно стихли — замри и не двигайся.</li>
+                <li>Если звонит внутренний телефон — сними трубку, но не говори. Положи трубку через 3 секунды.</li>
+                <li>После 4 утра кто-то будет проверять ручки. Если дверь охраны откроется — ты погиб.</li>
+                <li>Если увидел на камере девочку — у тебя 10 секунд, чтобы она исчезла. Если нет — она теперь с тобой.</li>
+                <li>Если встретил мальчика — смотри на него, не отворачивайся. Если его глаза покраснеют — беги в комнату охраны, включай свет и закрывай глаза.</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>8. Environment (Окружение)</h2>
+            <ul>
+                <li><span class="blink">Локация:</span> Многоэтажный офисный комплекс «Вершина» эпохи 90-х.</li>
+                <li><span class="blink">Атмосфера:</span> Заброшенность, пыль, выцветший ковер, мерцающие лампы дневного света, жужжание электроники.</li>
+                <li><span class="blink">Ключевые зоны:</span>
+                    <ul>
+                        <li>Комната охраны (хаб): Камеры, панель управления светом, рация, журнал.</li>
+                        <li>Open-space: Лабиринт из кабинок.</li>
+                        <li>Коридоры: Длинные, темные, с офисными растениями и столами для ксероксов.</li>
+                        <li>Комната отдыха: Старая мебель, телевизор, кофемашина.</li>
+                        <li>Серверная/Архив: Теснота, шум серверов, коробки с бумагами.</li>
+                        <li>Лестница: Бетон, эхо, аварийное освещение.</li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>9. Core Mechanics (Основные механики)</h2>
+            <ul>
+                <li><span class="blink">Передвижение:</span> Пешком, возможность бежать (ограничено запасом дыхания или временем).</li>
+                <li><span class="blink">Взаимодействие:</span> Включение света, использование дверей, подбор записок.</li>
+                <li><span class="blink">Наблюдение:</span> Просмотр системы камер наблюдения.</li>
+                <li><span class="blink">Особенность:</span> Камеры потребляют энергию, имеют «слепые зоны», могут давать сбои.</li>
+                <li><span class="blink">Реакция на правила:</span> Механика «Смотреть/Не смотреть», «Бежать/Стоять», «Включить/Выключить».</li>
+                <li><span class="blink">Преследование:</span> Динамические сцены погони с необходимостью искать укрытие или добегать до безопасной зоны.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>10. Platform & Tech (Платформа и технологии)</h2>
+            <ul>
+                <li><span class="blink">Целевые платформы:</span> PC (Steam), PlayStation 5, Xbox Series X/S.</li>
+                <li><span class="blink">Движок:</span> Unity (с акцентом на работу с освещением и пост-обработкой для создания атмосферы).</li>
+                <li><span class="blink">Важные технические аспекты:</span>
+                    <ul>
+                        <li>Звуковой движок (Wwise/FMOD): Критически важен для позиционирования звуков (шаги, плач, крики) в 3D-пространстве.</li>
+                        <li>Система освещения: Динамическое и статическое освещение, которое можно использовать как инструмент против угроз.</li>
+                        <li>ИИ-директор: Система, которая управляет частотой и интенсивностью событий based on player's progress and stress level.</li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+    </div>
+
+    <script>
+        // Простой скрипт для добавления случайных мерцаний
+        document.addEventListener('DOMContentLoaded', function() {
+            // Случайное добавление класса blink к некоторым элементам
+            const paragraphs = document.querySelectorAll('p, li');
+            paragraphs.forEach(p => {
+                if (Math.random() > 0.9) {
+                    p.classList.add('blink');
+
+                    // Случайное удаление класса через некоторое время
+                    setTimeout(() => {
+                        p.classList.remove('blink');
+                    }, Math.random() * 5000 + 2000);
+                }
+            });
+
+            // Периодическое добавление/удаление эффекта камеры
+            setInterval(() => {
+                const sections = document.querySelectorAll('section');
+                const randomSection = sections[Math.floor(Math.random() * sections.length)];
+
+                randomSection.classList.add('camera-effect');
+
+                setTimeout(() => {
+                    randomSection.classList.remove('camera-effect');
+                }, 300);
+            }, 8000);
+        });
+    </script>
+</body>
+</html>
